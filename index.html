@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<title>Portfolio</title>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="section" onclick="goTo('webdev')">
+    <i class="fas fa-code"></i> Web Developer
+  </div>
+  <div class="section" onclick="goTo('webdesign')">
+    <i class="fa-solid fa-palette"></i> Web Designer
+  </div>
+  <div class="section" onclick="goTo('ux')">
+    <i class="fa-solid fa-users"></i> UX Designer
+  </div>
+  <div class="section" onclick="goTo('project')">
+    <i class="fa-solid fa-chart-gantt"></i> Project Manager
+  </div>
+  <div class="section" onclick="goTo('accessibility')">
+    <i class="fa-brands fa-accessible-icon"></i> Accessibility Web
+  </div>
+
+  <div class="name">KUZNETSOV Nikita</div>
+  <div class="background-text">PORTFOLIO</div>
+</section>
+
+<div class="white-line"></div>
+
+<!-- WEB DEVELOPER SECTION -->
+<section id="webdev" class="page webdev">
+  <h2 class="section-title">Web Developer</h2>
+  <div class="cards-container">
+    <a href="https://projet1.com" target="_blank" class="card">
+      <img src="images/projet1.jpg" alt="Projet 1">
+      <h3>Projet 1</h3>
+      <p>Petite description du projet 1</p>
+    </a>
+    <a href="https://projet2.com" target="_blank" class="card">
+      <img src="images/projet2.jpg" alt="Projet 2">
+      <h3>Projet 2</h3>
+      <p>Petite description du projet 2</p>
+    </a>
+    <a href="https://projet3.com" target="_blank" class="card">
+      <img src="images/projet3.jpg" alt="Projet 3">
+      <h3>Projet 3</h3>
+      <p>Petite description du projet 3</p>
+    </a>
+    <a href="https://projet4.com" target="_blank" class="card">
+      <img src="images/projet4.jpg" alt="Projet 4">
+      <h3>Projet 4</h3>
+      <p>Petite description du projet 4</p>
+    </a>
+  </div>
+</section>
+
+<div class="white-line"></div>
+
+<!-- WEB DESIGN SECTION -->
+<section id="webdesign" class="page webdesign">
+  Web Designer
+</section>
+
+<div class="white-line"></div>
+
+<!-- UX DESIGNER SECTION -->
+<section id="ux" class="page ux">
+  UX Designer
+</section>
+
+<div class="white-line"></div>
+
+<!-- PROJECT MANAGER SECTION -->
+<section id="project" class="page project">
+  Project Manager
+</section>
+
+<div class="white-line"></div>
+
+<!-- ACCESSIBILITÉ SECTION -->
+<section id="accessibility" class="page accessibility">
+  Accessibilité Web
+</section>
+
+
+<script>
+function goTo(section){
+  document.getElementById(section).scrollIntoView({ behavior:"smooth" });
+}
+</script>
+
+</body>
+</html>
