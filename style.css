@@ -565,7 +565,7 @@ h1 {
   margin: 0px 0 10px 0; 
 }
 .project-description {
-  margin-right: 14px;
+  margin: 0 14px 2px 0;
   font-size: 0.7rem;
   font-weight: 400;
 }
@@ -585,7 +585,7 @@ h1 {
   align-items: center;
   justify-content: end;
   text-decoration: none;
-  padding: 8px 2px 0 0;
+  padding: 9px 2px 0 0;
   gap: 6px;
 }
 .box-link a p {
