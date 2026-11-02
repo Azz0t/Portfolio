@@ -280,7 +280,7 @@ h1 {
 ========================================*/
 @media (max-width: 768px) {
   .masthead-content {
-    margin-top: 16%;
+    padding-top: 16%;
     margin-left: 7%;
     margin-right: 7%;
     gap: 8px;
@@ -305,11 +305,11 @@ h1 {
     height: 34px;
   }
   .masthead-info .box-text .label {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 900;
   }
   .masthead-info .box-text .value {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
   }
