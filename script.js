@@ -145,8 +145,11 @@ animate();
 
 
 
+
 /*==========================| SECTION — PROJECTS |==========================*/
+
 document.addEventListener("DOMContentLoaded", () => {
+
   const track = document.querySelector(".projects-track");
   const container = document.querySelector(".projects-content");
 
@@ -157,6 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterContainer = document.querySelector(".projects-filters");
 
   if (!track || !container) return;
+
+  const isMobile = window.matchMedia("(max-width: 768px)");
 
   const STEP = 440;
 
@@ -174,19 +179,52 @@ document.addEventListener("DOMContentLoaded", () => {
   let maxX = 0;
 
   function computeBounds() {
+
     maxX = 0;
-    minX = Math.min(0, container.clientWidth - track.scrollWidth);
+
+    if (isMobile.matches) {
+      const style = window.getComputedStyle(container);
+
+      const padding =
+        parseFloat(style.paddingLeft) +
+        parseFloat(style.paddingRight);
+
+      minX = Math.min(
+        0,
+        container.clientWidth - padding - track.scrollWidth
+      );
+
+    } else {
+
+      minX = Math.min(
+        0,
+        container.clientWidth - track.scrollWidth
+      );
+
+    }
+
+    clamp();
   }
 
   function clamp() {
-    targetX = Math.max(minX, Math.min(maxX, targetX));
+
+    targetX = Math.max(
+      minX,
+      Math.min(maxX, targetX)
+    );
+
+    x = Math.max(
+      minX,
+      Math.min(maxX, x)
+    );
   }
 
   function applyTransform() {
-    track.style.transform = `translate3d(${x}px,0,0)`;
+    track.style.transform = `translate3d(${x}px, 0, 0)`;
   }
 
   function updateProgress() {
+
     if (!progressBar) return;
 
     const total = maxX - minX;
@@ -202,155 +240,290 @@ document.addEventListener("DOMContentLoaded", () => {
       `${Math.max(0, Math.min(1, progress)) * 100}%`;
   }
 
-  btnLeft?.addEventListener("click", () => {
-    targetX += STEP;
-    clamp();
-  });
+  function initDesktop() {
 
-  btnRight?.addEventListener("click", () => {
-    targetX -= STEP;
-    clamp();
-  });
+    btnLeft?.addEventListener("click", () => {
+      targetX += STEP;
+      clamp();
+    });
 
-  container.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    dragging = false;
+    btnRight?.addEventListener("click", () => {
+      targetX -= STEP;
+      clamp();
+    });
 
-    startX = e.clientX;
-    startY = e.clientY;
+    container.addEventListener("mousedown", (e) => {
 
-    velocity = 0;
-  });
+      isDragging = true;
+      dragging = false;
 
-  window.addEventListener("mouseup", () => {
-    isDragging = false;
-  });
+      startX = e.clientX;
+      startY = e.clientY;
 
-  window.addEventListener("mouseleave", () => {
-    isDragging = false;
-  });
+      velocity = 0;
 
-  window.addEventListener("blur", () => {
-    isDragging = false;
-  });
+    });
 
-  window.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    if (!dragging && Math.abs(dy) > Math.abs(dx)) {
+    window.addEventListener("mouseup", () => {
       isDragging = false;
-      return;
+    });
+
+    window.addEventListener("mouseleave", () => {
+      isDragging = false;
+    });
+
+    window.addEventListener("blur", () => {
+      isDragging = false;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+
+      if (!isDragging) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!dragging && Math.abs(dy) > Math.abs(dx)) {
+        isDragging = false;
+        return;
+      }
+
+      dragging = true;
+
+      startX = e.clientX;
+
+      x += dx;
+      targetX = x;
+
+      velocity = Math.max(-30, Math.min(30, dx));
+
+      clamp();
+      applyTransform();
+
+    });
+
+    function animateDesktop() {
+
+      if (!dragging && !isDragging) {
+
+        targetX += velocity;
+        velocity *= 0.92;
+
+        if (Math.abs(velocity) < 0.01) {
+          velocity = 0;
+        }
+
+      }
+
+      clamp();
+
+      x += (targetX - x) * 0.12;
+
+      applyTransform();
+      updateProgress();
+
+      requestAnimationFrame(animateDesktop);
     }
 
-    dragging = true;
-
-    startX = e.clientX;
-
-    x += dx;
-    targetX = x;
-
-    velocity = Math.max(-30, Math.min(30, dx));
-
-    clamp();
-    applyTransform();
-  });
-
-  function animateProjects() {
-    if (!dragging && !isDragging) {
-      targetX += velocity;
-      velocity *= 0.92;
-
-      if (Math.abs(velocity) < 0.01) velocity = 0;
-    }
-
-    clamp();
-
-    x += (targetX - x) * 0.12;
-
-    applyTransform();
-    updateProgress();
-
-    requestAnimationFrame(animateProjects);
+    animateDesktop();
   }
 
-  computeBounds();
-  animateProjects();
+  function initMobile() {
+
+    let pointerStartX = 0;
+    let targetStartX = 0;
+
+    container.addEventListener("pointerdown", (e) => {
+
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+
+      isDragging = true;
+
+      pointerStartX = e.clientX;
+      targetStartX = targetX;
+
+      container.classList.add("dragging");
+
+      container.setPointerCapture(e.pointerId);
+
+    });
+
+    container.addEventListener("pointermove", (e) => {
+
+      if (!isDragging) return;
+
+      const dx = e.clientX - pointerStartX;
+
+      targetX = targetStartX + dx;
+
+      clamp();
+
+    });
+
+    function stopDragging() {
+
+      if (!isDragging) return;
+
+      isDragging = false;
+
+      container.classList.remove("dragging");
+
+    }
+
+    container.addEventListener("pointerup", stopDragging);
+    container.addEventListener("pointercancel", stopDragging);
+    container.addEventListener("lostpointercapture", stopDragging);
+
+    /* Flèches mobiles */
+
+    function moveByCard(direction) {
+
+      const firstCard = track.querySelector(".project-card");
+
+      if (!firstCard) return;
+
+      const style = window.getComputedStyle(track);
+      const gap = parseFloat(style.columnGap) || 0;
+
+      const step = firstCard.offsetWidth + gap;
+
+      targetX += direction * step;
+
+      clamp();
+
+    }
+
+    btnLeft?.addEventListener("click", () => {
+      moveByCard(1);
+    });
+
+    btnRight?.addEventListener("click", () => {
+      moveByCard(-1);
+    });
+
+    function animateMobile() {
+
+      x += (targetX - x) * 0.14;
+
+      if (Math.abs(targetX - x) < 0.1) {
+        x = targetX;
+      }
+
+      applyTransform();
+      updateProgress();
+
+      requestAnimationFrame(animateMobile);
+
+    }
+
+    animateMobile();
+
+  }
 
   window.addEventListener("resize", () => {
     computeBounds();
-    clamp();
   });
 
-  if (!filterContainer) return;
+  if (filterContainer) {
 
-  let selectedTag = "ALL";
+    let selectedTag = "ALL";
 
-  function getAllTags() {
-    return [
-      "ALL",
-      ...new Set(
-        [...document.querySelectorAll(".tag-solo-in-project")]
-          .map(tag => tag.textContent.trim())
-      )
-    ];
-  }
+    function getAllTags() {
 
-  function filterCards() {
-    const cards = document.querySelectorAll(".project-card");
+      return [
+        "ALL",
+        ...new Set(
+          [...document.querySelectorAll(".tag-solo-in-project")]
+            .map(tag => tag.textContent.trim())
+        )
+      ];
 
-    cards.forEach(card => {
-      const tags = [...card.querySelectorAll(".tag-solo-in-project")]
-        .map(tag => tag.textContent.trim());
+    }
 
-      card.style.display =
-        selectedTag === "ALL" || tags.includes(selectedTag)
-          ? ""
-          : "none";
-    });
+    function filterCards() {
 
-    computeBounds();
-    clamp();
-  }
+      const cards = document.querySelectorAll(".project-card");
 
-  function renderFilters() {
-    const tags = getAllTags();
+      cards.forEach(card => {
 
-    filterContainer.innerHTML = "";
+        const tags = [
+          ...card.querySelectorAll(".tag-solo-in-project")
+        ].map(tag => tag.textContent.trim());
 
-    const fragment = document.createDocumentFragment();
+        card.style.display =
+          selectedTag === "ALL" || tags.includes(selectedTag)
+            ? ""
+            : "none";
 
-    tags.forEach(tag => {
-      const btn = document.createElement("button");
-
-      btn.textContent = tag;
-      btn.className = "filter-btn";
-
-      if (tag === "ALL") btn.classList.add("active");
-
-      btn.addEventListener("click", () => {
-        selectedTag = tag;
-
-        filterContainer
-          .querySelectorAll(".filter-btn")
-          .forEach(b => b.classList.remove("active"));
-
-        btn.classList.add("active");
-
-        filterCards();
       });
 
-      fragment.appendChild(btn);
-    });
+      x = 0;
+      targetX = 0;
+      velocity = 0;
 
-    filterContainer.appendChild(fragment);
+      computeBounds();
+
+    }
+
+    function renderFilters() {
+
+      const tags = getAllTags();
+
+      filterContainer.innerHTML = "";
+
+      const fragment = document.createDocumentFragment();
+
+      tags.forEach(tag => {
+
+        const btn = document.createElement("button");
+
+        btn.textContent = tag;
+        btn.className = "filter-btn";
+
+        if (tag === "ALL") {
+          btn.classList.add("active");
+        }
+
+        btn.addEventListener("click", () => {
+
+          selectedTag = tag;
+
+          filterContainer
+            .querySelectorAll(".filter-btn")
+            .forEach(b => b.classList.remove("active"));
+
+          btn.classList.add("active");
+
+          filterCards();
+
+        });
+
+        fragment.appendChild(btn);
+
+      });
+
+      filterContainer.appendChild(fragment);
+
+    }
+
+    renderFilters();
+
   }
 
-  renderFilters();
-  filterCards();
+  computeBounds();
+
+  if (isMobile.matches) {
+    initMobile();
+  } else {
+    initDesktop();
+  }
+
+  if (filterContainer) {
+    filterContainer.querySelector(".filter-btn")?.click();
+  }
+
 });
+
 
 
 
