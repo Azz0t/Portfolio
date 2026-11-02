@@ -47,16 +47,19 @@ controls.dampingFactor = 0.05;
 
 controls.enableZoom = false;
 controls.enablePan = false;
-const isMobile = window.matchMedia("(max-width: 768px)");
 
-controls.enableRotate = !isMobile.matches;
+const modelMobileQuery = window.matchMedia("(max-width: 768px)");
 
-isMobile.addEventListener("change", (e) => {
+controls.enableRotate = !modelMobileQuery.matches;
+
+modelMobileQuery.addEventListener("change", (e) => {
   controls.enableRotate = !e.matches;
 });
 
 controls.minPolarAngle = Math.PI / 2;
 controls.maxPolarAngle = Math.PI / 2;
+
+renderer.domElement.style.touchAction = "pan-y";
 
 const pivot = new THREE.Group();
 scene.add(pivot);
