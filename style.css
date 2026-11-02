@@ -117,6 +117,26 @@ h2 {
     font-size: 1rem;
   }
 }
+/*========================================
+  MOBILE — 768px maximum
+========================================*/
+@media (max-width: 768px) {
+  .fixed-actions {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+  }
+  .fixed-actions ul {
+    gap: 4px;
+  }
+  .fixed-actions ul li a {
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    border-radius: 8px;
+  }
+}
+
+
 
 /*==========================| SECTION — MASTHEAD |==========================*/
 .section-masthead {
@@ -252,6 +272,44 @@ h1 {
   }
   .masthead-info .box-text .value {
     font-size: 1.2rem;
+  }
+}
+/*========================================
+  MOBILE — 768px maximum
+========================================*/
+@media (max-width: 768px) {
+  .masthead-content {
+    margin-top: 7%;
+    margin-left: 7%;
+    gap: 8px;
+  }
+  .section-masthead {
+    background-image: url('./assets/images/masthead-background-mobile.jpg');
+    align-items: start;
+  }
+  h1 {
+    font-size: 2.4rem;
+  }
+  h1 span {
+    display: block;
+  }
+  .masthead-info {
+    width: 320px;
+    padding: 6px;
+    gap: 8px;
+  }
+  .masthead-info .box-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .masthead-info .box-text .label {
+    font-size: 0.8rem;
+    font-weight: 900;
+  }
+  .masthead-info .box-text .value {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
   }
 }
 
@@ -410,6 +468,51 @@ h1 {
   }
   .box-content-tag {
     width: 630px;
+  }
+}
+/*========================================
+  MOBILE — 768px maximum
+========================================*/
+@media (max-width: 768px) {
+  .section-skills {
+    height: auto;
+    min-height: 100vh;
+    padding: 25px 15px 40px;
+  }
+  .section-skills-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .tag-container {
+    width: 100%;
+    height: auto;
+    align-items: center;
+  }
+  .box-content-tag {
+    width: 100%;
+    max-width: 450px;
+  }
+  #three-container {
+    width: 100%;
+    height: 45vh;
+  }
+  .section-skills h2 {
+    margin: 0 0 20px 0;
+  }
+  .section-skills h3 {
+    margin: 30px 0 10px 0;
+    font-size: 1.2rem;
+  }
+  .tag {
+    padding: 4px 10px;
+    font-size: 0.68rem;
+  }
+  .tag-solo {
+    padding: 4px 10px;
+    font-size: 0.68rem;
   }
 }
 
@@ -778,5 +881,18 @@ footer .droits {
   footer .droits {
     bottom: 20px;
     font-size: 0.9rem;
+  }
+}
+/*========================================
+  MOBILE — 768px maximum
+========================================*/
+@media (max-width: 768px) {
+  .footer-box-links {
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+  }
+  .footer-box-links a {
+    padding: 0;
   }
 }
