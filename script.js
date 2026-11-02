@@ -47,7 +47,13 @@ controls.dampingFactor = 0.05;
 
 controls.enableZoom = false;
 controls.enablePan = false;
-controls.enableRotate = true;
+const isMobile = window.matchMedia("(max-width: 768px)");
+
+controls.enableRotate = !isMobile.matches;
+
+isMobile.addEventListener("change", (e) => {
+  controls.enableRotate = !e.matches;
+});
 
 controls.minPolarAngle = Math.PI / 2;
 controls.maxPolarAngle = Math.PI / 2;
@@ -350,7 +356,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /*==========================| SCROLL |==========================*/
-
 const sections = [
     document.querySelector(".section-masthead"),
     document.querySelector(".section-skills"),
@@ -376,12 +381,18 @@ function goToSection(index) {
     });
 }
 
-window.addEventListener("wheel", (event) => {
-    event.preventDefault();
+if (!isMobile.matches) {
 
-    if (Math.abs(event.deltaY) < 2) return;
+    window.addEventListener("wheel", (event) => {
 
-    goToSection(
-        targetSection + (event.deltaY > 0 ? 1 : -1)
-    );
-}, { passive: false });
+        event.preventDefault();
+
+        if (Math.abs(event.deltaY) < 2) return;
+
+        goToSection(
+            targetSection + (event.deltaY > 0 ? 1 : -1)
+        );
+
+    }, { passive: false });
+
+}
