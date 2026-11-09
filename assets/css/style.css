@@ -227,6 +227,32 @@ h1 {
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
+/*===| DOWN ARROW |===*/
+.scroll-indicator {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(251, 247, 238, 0.65);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(79, 37, 19, 0.15);
+  text-decoration: none;
+  cursor: pointer;
+}
+.scroll-arrow {
+  width: 11px;
+  height: 11px;
+  border-right: 2px solid #FBF7EE;
+  border-bottom: 2px solid #FBF7EE;
+  transform: rotate(45deg);
+  margin-top: -5px;
+}
+
 /*==========================
 1920px
 ==========================*/
@@ -312,6 +338,15 @@ h1 {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
+  }
+  .scroll-indicator {
+    bottom: 22px;
+    width: 36px;
+    height: 36px;
+  }
+  .scroll-arrow {
+    width: 9px;
+    height: 9px;
   }
 }
 
